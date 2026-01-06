@@ -32,6 +32,20 @@ spec:
         server: "{{server}}"
         namespace: kube-system
 
+      ignoreDifferences:
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: ingressclassparams.elbv2.k8s.aws
+          jqPathExpressions:
+            - .spec
+            - .status
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: targetgroupbindings.elbv2.k8s.aws
+          jqPathExpressions:
+            - .spec
+            - .status
+
       syncPolicy:
         automated:
           prune: true
