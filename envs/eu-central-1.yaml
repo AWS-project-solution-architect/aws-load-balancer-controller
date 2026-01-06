@@ -1,0 +1,6 @@
+# Environment-specific overrides for eu-central-1
+clusterName: eks-prod-eu-central-1
+
+serviceAccount:
+  create: false
+  name: aws-load-balancer-controller

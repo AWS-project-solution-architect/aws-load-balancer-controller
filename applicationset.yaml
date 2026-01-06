@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: aws-load-balancer-controller
+  namespace: argocd
+spec:
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: region
+              operator: In
+              values:
+                - eu-central-1
+                - us-east-1
+
+  template:
+    metadata:
+      name: aws-load-balancer-controller-{{metadata.labels.region}}
+    spec:
+      project: infra
+
+      source:
+        repoURL: https://github.com/AWS-project-solution-architect/aws-load-balancer-controller.git
+        targetRevision: main
+        path: aws-load-balancer-controller-chart
+        helm:
+          valueFiles:
+            - ../envs/{{metadata.labels.region}}.yaml
+
+      destination:
+        server: "{{server}}"
+        namespace: kube-system
+
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

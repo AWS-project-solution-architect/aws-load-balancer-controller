@@ -1,0 +1,6 @@
+# Environment-specific overrides for us-east-1
+clusterName: eks-prod-us-east-1
+
+serviceAccount:
+  create: false
+  name: aws-load-balancer-controller
